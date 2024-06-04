@@ -12,7 +12,13 @@ const Sidebar = () => {
                     Dashboard
                 </Nav.Link>
                 <Nav.Link as={Link} to="/users" className="text-white">
-                    Users
+                    Data Users
+                </Nav.Link>
+                <Nav.Link as={Link} to="/pujasera" className="text-white">
+                    Data Pujasera
+                </Nav.Link>
+                <Nav.Link as={Link} to="/merchants" className="text-white">
+                    Data Merchants
                 </Nav.Link>
             </Nav>
         </div>
