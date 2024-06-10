@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { Form, Button, Spinner, Toast } from 'react-bootstrap';
 import { useCreatePujasra, useEditPujasera, useFetchPujaseras, useFetchPujaseraById } from '../features/pujasera';
+import { useFetchUsers } from '../features/user';
 
 const AddEditPujasera = () => {
     const { id } = useParams();
@@ -13,6 +14,7 @@ const AddEditPujasera = () => {
     const [message, setMessage] = useState('');
 
     const { refetch: refecthPujaseras } = useFetchPujaseras();
+    const { data: owners } = useFetchUsers(3);
 
     const { mutate: createPujasera, isLoading: createPujaseraIsLoading } = useCreatePujasra({
         onSuccess: (data) => {
@@ -125,14 +127,16 @@ const AddEditPujasera = () => {
                 {!id && (
                     <>
                         <Form.Group controlId="owner_id" className="mb-3">
-                            <Form.Label>Owner ID</Form.Label>
-                            <Form.Control
-                                type="text"
-                                placeholder="Enter owner id"
+                            <Form.Label>Owner Name</Form.Label>
+                            <Form.Select
                                 name="owner_id"
                                 onChange={handleFormInput}
                                 value={formik.values.owner_id}
-                            />
+                            >
+                                {owners && owners.map((owner) => (
+                                    <option key={owner.id} value={owner.id}>{owner.username}</option>
+                                ))}
+                            </Form.Select>
                         </Form.Group>
                         <Form.Group controlId="name" className="mb-3">
                             <Form.Label>Name</Form.Label>

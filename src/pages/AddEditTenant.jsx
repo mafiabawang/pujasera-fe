@@ -5,6 +5,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { Form, Button, Spinner, Toast } from 'react-bootstrap';
 import { useCreateTenant, useEditTenant, useFetchTenants, useFetchTenantById } from '../features/tenants';
+import { useFetchUsers } from '../features/user';
+import { useFetchPujaseras } from '../features/pujasera';
 
 const AddEditTenant = () => {
     const { id } = useParams();
@@ -13,6 +15,8 @@ const AddEditTenant = () => {
     const [message, setMessage] = useState('');
 
     const { refetch: refecthTenants } = useFetchTenants();
+    const { data: sellers } = useFetchUsers(2);
+    const { data: places } = useFetchPujaseras();
 
     const { mutate: createTenant, isLoading: createTenantIsLoading } = useCreateTenant({
         onSuccess: (data) => {
@@ -112,24 +116,28 @@ const AddEditTenant = () => {
                 {!id && (
                     <>
                         <Form.Group controlId="seller_id" className="mb-3">
-                            <Form.Label>Seller ID</Form.Label>
-                            <Form.Control
-                                type="text"
-                                placeholder="Enter Seller ID"
+                            <Form.Label>Seller Name</Form.Label>
+                            <Form.Select
                                 name="seller_id"
                                 onChange={handleFormInput}
                                 value={formik.values.seller_id}
-                            />
+                            >
+                                {sellers && sellers.map((seller) => (
+                                    <option key={seller.id} value={seller.id}>{seller.username}</option>
+                                ))}
+                            </Form.Select>
                         </Form.Group>
                         <Form.Group controlId="place_id" className="mb-3">
-                            <Form.Label>Place ID</Form.Label>
-                            <Form.Control
-                                type="text"
-                                placeholder="Enter Place ID"
+                            <Form.Label>Place Name</Form.Label>
+                            <Form.Select
                                 name="place_id"
                                 onChange={handleFormInput}
                                 value={formik.values.place_id}
-                            />
+                            >
+                                {places && places.map((place) => (
+                                    <option key={place.id} value={place.id}>{place.place_name}</option>
+                                ))}
+                            </Form.Select>
                         </Form.Group>
                         <Form.Group controlId="name" className="mb-3">
                             <Form.Label>Name</Form.Label>
